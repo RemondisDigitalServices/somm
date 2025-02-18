@@ -41,6 +41,26 @@ RSpec.describe Somm do
     end
   end
 
+  describe "deconstructing context" do
+    subject(:service) do
+      Class.new(Somm) do
+        output :user_name
+
+        def call
+          context.user_name = "John Doe"
+        end
+      end
+    end
+
+    it "deconstructs the name" do
+      service.call => user_name:, success:, failure:
+
+      expect(user_name).to eq("John Doe")
+      expect(success).to be(true)
+      expect(failure).to be(false)
+    end
+  end
+
   describe ".call!" do
     subject(:service) do
       Class.new(Somm) do
