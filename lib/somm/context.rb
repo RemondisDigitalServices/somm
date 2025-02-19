@@ -21,6 +21,11 @@ class Somm
       @_failure
     end
 
+    def deconstruct_keys(keys)
+      keys.map { |key| [key, instance_variable_get("@#{key}")] }.to_h
+          .merge(success: success?, failure: failure?)
+    end
+
     private
 
     def set(**attributes)
